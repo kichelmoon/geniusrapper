@@ -20,6 +20,16 @@ function doKeyPress(e){
         let songName = document.getElementsByClassName("header_with_cover_art-primary_info-title")[0].innerHTML;
         let artist = document.getElementsByClassName("song_album-info-artist")[0].innerHTML;
         let album = document.getElementsByClassName("song_album-info-title")[0].innerHTML;
-        alert(songName);
+        let geniusLink = window.location.href;
+
+        let returnObject = {
+            "line": text,
+            "song": songName,
+            "artist": artist,
+            "album": album,
+            "genius": geniusLink
+        };
+
+        console.log(returnObject);
     }
 }
