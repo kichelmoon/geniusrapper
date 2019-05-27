@@ -1,0 +1,17 @@
+{
+  "name": "Genius Rapper",
+  "version": "1.0",
+  "description": "Deutschrap Zeilen von Genius markieren",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.genius.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": ["tabs", "<all_urls>", "storage", "webRequest"]
+}
