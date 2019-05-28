@@ -24,6 +24,7 @@ function doKeyPress(e){
         let songName = document.getElementsByClassName("header_with_cover_art-primary_info-title")[0].innerHTML.trim();
         let artist = document.getElementsByClassName("song_album-info-artist")[0].innerHTML.trim();
         let album = document.getElementsByClassName("song_album-info-title")[0].innerHTML.split(/<(.+)/)[0].trim();
+        let year = document.getElementsByClassName("metadata_unit-info metadata_unit-info--text_only")[0].innerHTML.split(/,(.+)/)[1].trim();
         let geniusLink = window.location.href;
         let youtubeLink = pageHtml.match(youtubeRegex)[0];
 
@@ -32,6 +33,7 @@ function doKeyPress(e){
             "song": songName,
             "artist": artist,
             "album": album,
+            "year": year,
             "genius": geniusLink,
             "youtube": youtubeLink
         };
