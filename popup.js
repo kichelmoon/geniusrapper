@@ -12,7 +12,7 @@ let csvButton = document.getElementById("downloadCsv");
 
 sendButton.addEventListener('click', function () {
     let spotifyToken = tokenInput.value;
-    alert("lol");
+    alert("Token gespeichert");
     chrome.storage.sync.set({token: spotifyToken}, function() {
         console.log("Token: " + spotifyToken)
     });
