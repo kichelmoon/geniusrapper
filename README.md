@@ -1,5 +1,8 @@
 # Genius Lines mit Daten speichern
 
+## Plugin installieren
+Unter der URL `chrome://extensions/` rechts oben den Entwicklermodus einschalten und dann über "Entpackte Erweiterung laden" den Ordner hier auswählen.
+
 ## Verwendung
 Line markieren und mit "SHIFT + G" speichern. Wenn alle Lines so gespeichert wurden das Plugin-Popup oben rechts öffnen und "CSV speichern" klicken.
 
