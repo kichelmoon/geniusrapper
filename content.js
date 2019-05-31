@@ -9,6 +9,20 @@ function getSelectionText() {
     return text;
 }
 
+function saveCsv(text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year) {
+    let csvText = '"' + text + '"';
+    let csv = [csvText, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year];
+    chrome.storage.sync.get(["csvRows"], function (result) {
+        let rowArray = result.csvRows;
+        rowArray.push(csv);
+
+        chrome.storage.sync.set({csvRows: rowArray}, function () {
+            console.log("Row gespeichert");
+            alert(text);
+        });
+    });
+}
+
 let trigger_key = 71; // G
 window.onkeypress = function(e) {
     if (e.shiftKey && e.keyCode === trigger_key) {
@@ -16,7 +30,7 @@ window.onkeypress = function(e) {
 
         let youtubeRegex = new RegExp("(https?:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/watch\\?v=[a-z0-9]+", "i");
 
-        let text = '"' + getSelectionText() + '"'; //"" for saving the newlines in excel
+        let text = getSelectionText(); //"" for saving the newlines in excel
 
         let songName = document.getElementsByClassName("header_with_cover_art-primary_info-title")[0].innerHTML.trim();
         let artist = document.getElementsByClassName("song_album-info-artist")[0].innerHTML.trim();
@@ -53,16 +67,7 @@ window.onkeypress = function(e) {
                                 if (tracks[i].name === songName) {
                                     spotifyLink = tracks[i].external_urls.spotify;
 
-                                    let csv = [text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year];
-                                    chrome.storage.sync.get(["csvRows"], function(result) {
-                                        let rowArray = result.csvRows;
-                                        rowArray.push(csv);
-
-                                        chrome.storage.sync.set({csvRows: rowArray}, function() {
-                                            console.log("Saved a new array item");
-                                            alert(text);
-                                        });
-                                    });
+                                    saveCsv(text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year);
                                 }
                             }
                         },
@@ -71,18 +76,8 @@ window.onkeypress = function(e) {
                 },
                 error: function () {
                     alert("Spotify macht Heckmeck, speichere ohne Link. Vielleicht Token erneuern.");
-                    spotifyLink = "todo";
 
-                    let csv = [text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year];
-                    chrome.storage.sync.get(["csvRows"], function (result) {
-                        let rowArray = result.csvRows;
-                        rowArray.push(csv);
-
-                        chrome.storage.sync.set({csvRows: rowArray}, function () {
-                            console.log("Saved a new array item");
-                            alert(text);
-                        });
-                    });
+                    saveCsv(text, artist, songName, youtubeLink, "todo", geniusLink, album, year);
                 },
                 dataType: "json"
             });
