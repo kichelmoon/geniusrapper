@@ -1,3 +1,11 @@
+document.addEventListener('DOMContentLoaded', function () {
+    let link = document.getElementById("spotifyLink");
+    let linkLocation = link.href;
+    link.onclick = function () {
+        chrome.tabs.create({active: true, url: linkLocation});
+    };
+});
+
 let tokenInput = document.getElementById("token");
 let sendButton = document.getElementById("sendToken");
 let csvButton = document.getElementById("downloadCsv");
