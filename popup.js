@@ -33,7 +33,7 @@ csvButton.addEventListener('click', function () {
         let encodedUri = encodeURI(csvContent);
         let link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "my_data.csv");
+        link.setAttribute("download", "Punchlines.csv");
         document.body.appendChild(link); // Required for FF
 
         link.click()
