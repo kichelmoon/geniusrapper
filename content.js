@@ -9,12 +9,8 @@ function getSelectionText() {
     return text;
 }
 
-if (window === top) {
-    window.addEventListener('keyup', doKeyPress, false); //add the keyboard handler
-}
-
 let trigger_key = 71; // g key
-function doKeyPress(e) {
+window.onkeypress = function(e) {
     if (e.shiftKey && e.keyCode === trigger_key) {
         let pageHtml = document.documentElement.outerHTML;
 
@@ -75,7 +71,7 @@ function doKeyPress(e) {
                 },
                 error: function () {
                     alert("Spotify macht Heckmeck, speichere ohne Link. Vielleicht Token erneuern.");
-                    spotifyLink = "";
+                    spotifyLink = "todo";
 
                     let csv = [text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year];
                     chrome.storage.sync.get(["csvRows"], function (result) {
@@ -92,4 +88,4 @@ function doKeyPress(e) {
             });
         });
     }
-}
+};
