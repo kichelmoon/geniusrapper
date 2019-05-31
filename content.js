@@ -9,7 +9,7 @@ function getSelectionText() {
     return text;
 }
 
-let trigger_key = 71; // g key
+let trigger_key = 71; // G
 window.onkeypress = function(e) {
     if (e.shiftKey && e.keyCode === trigger_key) {
         let pageHtml = document.documentElement.outerHTML;
