@@ -16,9 +16,6 @@ sendButton.addEventListener('click', function () {
     chrome.storage.sync.set({token: spotifyToken}, function() {
         console.log("Token: " + spotifyToken)
     });
-    chrome.storage.sync.set({csvRows: []}, function () {
-        console.log("Reset rows");
-    });
 });
 
 csvButton.addEventListener('click', function () {
