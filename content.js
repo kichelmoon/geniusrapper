@@ -33,9 +33,13 @@ window.onkeypress = function(e) {
         let text = getSelectionText(); //"" for saving the newlines in excel
 
         let songName = document.getElementsByClassName("header_with_cover_art-primary_info-title")[0].innerHTML.trim();
-        let artist = document.getElementsByClassName("song_album-info-artist")[0].innerHTML.trim();
+        let artist = document.getElementsByClassName("song_album-info-artist")[0].innerHTML.replace(/&amp;/g, '&').trim();
         let album = document.getElementsByClassName("song_album-info-title")[0].innerHTML.split(/<(.+)/)[0].trim();
-        let year = document.getElementsByClassName("metadata_unit-info metadata_unit-info--text_only")[0].innerHTML.split(/,(.+)/)[1].trim();
+        let year = "todo";
+        let yearString = document.getElementsByClassName("metadata_unit-info metadata_unit-info--text_only")[0].innerHTML.split(/,(.+)/)[1];
+        if (typeof yearString  !== "undefined") {
+            year = yearString.trim();
+        }
         let geniusLink = window.location.href;
         let youtubeLink = "todo";
         if(pageHtml.match(youtubeRegex) !== null) {
@@ -52,27 +56,32 @@ window.onkeypress = function(e) {
                     "Authorization": "Authorization: Bearer " + result.token
                 },
                 success: function (data) {
-                    let albumId = data.albums.items[0].id;
-                    $.ajax({
-                        type: "GET",
-                        url: "https://api.spotify.com/v1/albums/" + albumId + "/tracks",
-                        headers: {
-                            "Accept": "application/json",
-                            "Content-Type": "application/json",
-                            "Authorization": "Authorization: Bearer " + result.token
-                        },
-                        success: function (albumTrackData) {
-                            let tracks = albumTrackData.items;
-                            for (let i = 0; i < tracks.length; i++) {
-                                if (tracks[i].name === songName) {
-                                    spotifyLink = tracks[i].external_urls.spotify;
+                    if (typeof data.albums.items[0] !== "undefined") {
+                        let albumId = data.albums.items[0].id;
+                        $.ajax({
+                            type: "GET",
+                            url: "https://api.spotify.com/v1/albums/" + albumId + "/tracks",
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json",
+                                "Authorization": "Authorization: Bearer " + result.token
+                            },
+                            success: function (albumTrackData) {
+                                let tracks = albumTrackData.items;
+                                for (let i = 0; i < tracks.length; i++) {
+                                    if (tracks[i].name === songName) {
+                                        spotifyLink = tracks[i].external_urls.spotify;
 
-                                    saveCsv(text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year);
+                                        saveCsv(text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year);
+                                    }
                                 }
-                            }
-                        },
-                        dataType: "json"
-                    });
+                            },
+                            dataType: "json"
+                        });
+                    } else {
+                        saveCsv(text, artist, songName, youtubeLink, "todo", geniusLink, album, year);
+
+                    }
                 },
                 error: function () {
                     alert("Spotify macht Heckmeck, speichere ohne Link. Vielleicht Token erneuern.");
