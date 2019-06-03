@@ -10,7 +10,7 @@ function getSelectionText() {
 }
 
 function saveCsv(text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year) {
-    let csvText = '"' + text + '"';
+    let csvText = '"' + text + '"'; //"" for newlines in the CSV file
     let csv = [csvText, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year];
     chrome.storage.sync.get(["csvRows"], function (result) {
         let rowArray = result.csvRows;
@@ -30,17 +30,20 @@ window.onkeypress = function(e) {
 
         let youtubeRegex = new RegExp("(https?:\\/\\/)?(www\\.youtube\\.com|youtu\\.?be)\\/watch\\?v=[a-z0-9]+", "i");
 
-        let text = getSelectionText(); //"" for saving the newlines in excel
+        let text = getSelectionText();
 
         let songName = document.getElementsByClassName("header_with_cover_art-primary_info-title")[0].innerHTML.trim();
         let artist = document.getElementsByClassName("song_album-info-artist")[0].innerHTML.replace(/&amp;/g, '&').trim();
         let album = document.getElementsByClassName("song_album-info-title")[0].innerHTML.split(/<(.+)/)[0].trim();
+
         let year = "todo";
         let yearString = document.getElementsByClassName("metadata_unit-info metadata_unit-info--text_only")[0].innerHTML.split(/,(.+)/)[1];
         if (typeof yearString  !== "undefined") {
             year = yearString.trim();
         }
+
         let geniusLink = window.location.href;
+
         let youtubeLink = "todo";
         if(pageHtml.match(youtubeRegex) !== null) {
             youtubeLink = pageHtml.match(youtubeRegex)[0];
@@ -70,9 +73,7 @@ window.onkeypress = function(e) {
                                 let tracks = albumTrackData.items;
                                 for (let i = 0; i < tracks.length; i++) {
                                     if (tracks[i].name === songName) {
-                                        spotifyLink = tracks[i].external_urls.spotify;
-
-                                        saveCsv(text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year);
+                                        saveCsv(text, artist, songName, youtubeLink, tracks[i].external_urls.spotify, geniusLink, album, year);
                                     }
                                 }
                             },
