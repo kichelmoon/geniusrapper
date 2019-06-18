@@ -10,7 +10,7 @@ function getSelectionText() {
 }
 
 function saveCsv(text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year) {
-    let csvText = '"' + text + '"'; //"" for newlines in the CSV file
+    let csvText = unescape(encodeURIComponent('"' + text + '"')); //"" for newlines in the CSV file
     let csv = [csvText, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year];
     chrome.storage.sync.get(["csvRows"], function (result) {
         let rowArray = result.csvRows;
