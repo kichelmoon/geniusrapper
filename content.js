@@ -33,8 +33,21 @@ window.onkeypress = function(e) {
         let text = getSelectionText();
 
         let songName = document.getElementsByClassName("header_with_cover_art-primary_info-title")[0].innerHTML.trim();
-        let artist = document.getElementsByClassName("song_album-info-artist")[0].innerHTML.replace(/&amp;/g, '&').trim();
-        let album = document.getElementsByClassName("song_album-info-title")[0].innerHTML.split(/<(.+)/)[0].trim();
+
+        let artist = "todo";
+        let artistMainElement = document.getElementsByClassName("song_album-info-artist")[0];
+        let artistFallbackElement = document.getElementsByClassName("header_with_cover_art-primary_info-primary_artist")[0];
+        if (typeof artistMainElement !== "undefined") {
+            artist = artistMainElement.innerHTML.replace(/&amp;/g, '&').trim();
+        } else if (typeof artistFallbackElement !== "undefined") {
+            artist = artistFallbackElement.innerHTML.replace(/&amp;/g, '&').trim();
+        }
+
+        let album = "todo";
+        let albumElement = document.getElementsByClassName("song_album-info-title")[0];
+        if (typeof albumElement !== "undefined") {
+            album = albumElement.innerHTML.split(/<(.+)/)[0].trim();
+        }
 
         let year = "todo";
         let yearString = document.getElementsByClassName("metadata_unit-info metadata_unit-info--text_only")[0].innerHTML.split(/,(.+)/)[1];
