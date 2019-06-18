@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     let link = document.getElementById("spotifyLink");
     let linkLocation = link.href;
+
     link.onclick = function () {
         chrome.tabs.create({active: true, url: linkLocation});
     };
@@ -13,6 +14,7 @@ let csvButton = document.getElementById("downloadCsv");
 sendButton.addEventListener('click', function () {
     let spotifyToken = tokenInput.value;
     alert("Token gespeichert");
+
     chrome.storage.sync.set({token: spotifyToken}, function() {
         console.log("Token: " + spotifyToken)
     });
@@ -31,10 +33,11 @@ csvButton.addEventListener('click', function () {
         let link = document.createElement("a");
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", "Punchlines.csv");
-        document.body.appendChild(link); // Required for FF
+        document.body.appendChild(link); // Required for Firefox
 
         link.click()
     });
+
     chrome.storage.sync.set({csvRows: []}, function () {
         console.log("Reset rows");
     })

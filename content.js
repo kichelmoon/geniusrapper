@@ -12,6 +12,7 @@ function getSelectionText() {
 function saveCsv(text, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year) {
     let csvText = unescape(encodeURIComponent('"' + text + '"')); //"" for newlines in the CSV file
     let csv = [csvText, artist, songName, youtubeLink, spotifyLink, geniusLink, album, year];
+
     chrome.storage.sync.get(["csvRows"], function (result) {
         let rowArray = result.csvRows;
         rowArray.push(csv);
@@ -93,12 +94,13 @@ window.onkeypress = function(e) {
                             dataType: "json"
                         });
                     } else {
-                        saveCsv(text, artist, songName, youtubeLink, "todo", geniusLink, album, year);
+                        alert("Spotify macht Heckmeck, speichere ohne Spotify-Link. Kann sein, dass es den Song dort nicht gibt.");
 
+                        saveCsv(text, artist, songName, youtubeLink, "todo", geniusLink, album, year);
                     }
                 },
                 error: function () {
-                    alert("Spotify macht Heckmeck, speichere ohne Link. Vielleicht Token erneuern.");
+                    alert("Spotify macht Heckmeck, speichere ohne Spotify-Link. Vielleicht Token erneuern.");
 
                     saveCsv(text, artist, songName, youtubeLink, "todo", geniusLink, album, year);
                 },
